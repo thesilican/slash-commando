@@ -4,4 +4,5 @@ export * from "./basecommand";
 export * from "./client";
 export * from "./command";
 export * from "./commandregistry";
+export * from "./interaction";
 export * from "./subcommand";
