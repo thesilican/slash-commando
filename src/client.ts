@@ -53,7 +53,7 @@ export class CommandClient extends Discord.Client {
     this.ws.on("INTERACTION_CREATE", this.onInteraction.bind(this));
   }
 
-  private async reconcileCommands() {
+  public async reconcileCommands() {
     const appId = (await this.fetchApplication()).id;
     const guildId = this.guildId;
     // Undocumented API
