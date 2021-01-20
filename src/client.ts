@@ -42,7 +42,7 @@ export class CommandClient extends Discord.Client {
       return;
     }
 
-    if (options?.noReconcileCommands ?? true) {
+    if (!(options?.noReconcileCommands ?? false)) {
       try {
         await this.reconcileCommands();
       } catch (err) {
@@ -173,11 +173,12 @@ export class CommandClient extends Discord.Client {
     // Parse args and subcommands
     let args: string[] = [];
     let subcommands: string[] = [];
-    let options:
-      | APIApplicationCommandInteractionDataOption[]
-      | undefined = Array.isArray(apiInt.data?.options)
-      ? apiInt.data?.options
-      : [apiInt.data!.options!];
+    let options: APIApplicationCommandInteractionDataOption[] | undefined =
+      apiInt.data?.options === undefined
+        ? undefined
+        : Array.isArray(apiInt.data?.options)
+        ? apiInt.data.options
+        : [apiInt.data.options];
     while (options !== undefined) {
       args = options.map((x) => x.value!);
       subcommands.push(options[0].name);

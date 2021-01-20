@@ -96,7 +96,9 @@ class GitCommitCommand extends SubCommand {
     });
   }
 
-  async run(int: Interaction) {}
+  async run(int: Interaction) {
+    int.say("Good for you. Remember to commit often");
+  }
 }
 
 class BreakingCommand extends Command {
