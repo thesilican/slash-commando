@@ -17,6 +17,10 @@ export type CommandClientOptions = Discord.ClientOptions & {
   guild: string;
 };
 
+export type CommandClientStartOptions = {
+  noReconcileCommands?: boolean;
+};
+
 export class CommandClient extends Discord.Client {
   public readonly owner: string;
   public readonly guildId: string;
@@ -30,7 +34,7 @@ export class CommandClient extends Discord.Client {
     this.on("ready", this.onReady.bind(this));
   }
 
-  public async start() {
+  public async start(options?: CommandClientStartOptions) {
     await this.login();
     if (!this.user) {
       console.error("Unable to log in with token");
@@ -38,14 +42,16 @@ export class CommandClient extends Discord.Client {
       return;
     }
 
-    try {
-      await this.reconcileCommands();
-    } catch (err) {
-      console.error(
-        `There was a problem creating the commands via discord API:\n${err.message}\nPath: ${err.method} ${err.path}`
-      );
-      this.stop();
-      return;
+    if (options?.noReconcileCommands ?? true) {
+      try {
+        await this.reconcileCommands();
+      } catch (err) {
+        console.error(
+          `There was a problem creating the commands via discord API:\n${err.message}\nPath: ${err.method} ${err.path}`
+        );
+        this.stop();
+        return;
+      }
     }
 
     // Undocumented API
