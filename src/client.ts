@@ -115,7 +115,10 @@ export class CommandClient extends Discord.Client {
       console.log("Editing", editList.length, "commands");
       for (const [id, command] of editList) {
         console.log(`  Editing ${command.name}`);
-        await endpoint()[id].patch({ data: command });
+        // For some reason PATCH didn't work properly
+        // await endpoint()[id].patch({ data: command });
+        await endpoint()[id].delete();
+        await endpoint().post({ data: command });
       }
     }
     if (deleteList.length) {
