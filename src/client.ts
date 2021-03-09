@@ -229,7 +229,7 @@ export class CommandClient extends Discord.Client {
       }
     }
     if (!found) {
-      throw new Error(
+      console.error(
         "Unable to find command with id " +
           apiInt.data!.id +
           " to resolve interaction"
