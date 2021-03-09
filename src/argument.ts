@@ -14,7 +14,7 @@ export type ArgumentType =
 
 export type ArgumentChoice = {
   name: string;
-  value: number;
+  value: string | number;
 };
 
 export type ArgumentOptions = {

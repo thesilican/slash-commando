@@ -40,7 +40,7 @@ function compareOpts(opts1: Options, opts2: Options): boolean {
     // Both are subcommands, compare subcommands
     const names1 = opts1!.map((x) => x.name);
     const names2 = opts2!.map((x) => x.name);
-    if (!compareArrays(names1, names2)) {
+    if (!compareObjects(names1, names2)) {
       return false;
     }
     for (const name of names1) {
@@ -80,7 +80,7 @@ function compareOpts(opts1: Options, opts2: Options): boolean {
       if (
         opt1.choices &&
         opt2.choices &&
-        !compareArrays(opt1.choices, opt2.choices)
+        !compareObjects(opt1.choices, opt2.choices)
       ) {
         return false;
       }
@@ -97,14 +97,53 @@ function compareStrings(str1: string, str2: string) {
   return str1.trim() === str2.trim();
 }
 
-function compareArrays<T>(arr1: T[], arr2: T[]) {
-  const set1 = new Set<T>(arr1);
-  const set2 = new Set<T>(arr2);
-  if (set1.size !== set2.size) {
+function compareObjects(a: any, b: any): boolean {
+  // Generic compare to objects
+  if (typeof a !== typeof b) {
     return false;
   }
-  for (const val of set1.keys()) {
-    if (!set2.has(val)) {
+
+  if (typeof a === "string" || typeof b === "string") {
+    return compareStrings(a, b);
+  }
+  if (typeof a === "number" || typeof b === "number") {
+    return a === b;
+  }
+  if (a === undefined || b === undefined) {
+    return a === b;
+  }
+  if (a === null || b === null) {
+    return a === b;
+  }
+
+  if (Array.isArray(a) || Array.isArray(b)) {
+    if (!Array.isArray(a) || !Array.isArray(b)) {
+      return false;
+    }
+    if (a.length !== b.length) {
+      return false;
+    }
+    for (let i = 0; i < a.length; i++) {
+      if (!compareObjects(a[i], b[i])) {
+        return false;
+      }
+    }
+  }
+
+  if (typeof a !== "object" || typeof b !== "object") {
+    throw new Error("Expected type object");
+  }
+  const aKeys = new Set(Object.keys(a));
+  const bKeys = new Set(Object.keys(b));
+  const abKeys = new Set([...aKeys.values(), ...bKeys.values()]);
+  for (const key in abKeys) {
+    if (!aKeys.has(key)) {
+      return false;
+    }
+    if (!bKeys.has(key)) {
+      return false;
+    }
+    if (!compareObjects(a[key], b[key])) {
       return false;
     }
   }

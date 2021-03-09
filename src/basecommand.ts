@@ -39,7 +39,7 @@ export abstract class BaseCommand {
     }
   }
 
-  async run(int: Interaction): Promise<void> {
+  async run(int: Interaction): Promise<any> {
     throw new Error(
       "Command not implemented, you must add a 'run' method to your command class"
     );
