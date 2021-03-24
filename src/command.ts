@@ -1,6 +1,5 @@
 import { APIApplicationCommandCreateOptions } from "./api";
 import { BaseCommand, BaseCommandOptions } from "./basecommand";
-import { Interaction } from "./interaction";
 import { Serializable } from "./util";
 
 export type CommandOptions = BaseCommandOptions & {};

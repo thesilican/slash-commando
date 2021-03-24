@@ -1,6 +1,6 @@
-import env from "./env";
 import { Command, CommandClient, SubCommand } from "../src";
 import { Interaction } from "../src/interaction";
+import env from "./env";
 
 class HelloWorldCommand extends Command {
   constructor() {
