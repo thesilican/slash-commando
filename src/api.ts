@@ -76,7 +76,7 @@ export enum APIInteractionResponseType {
   Acknowledge = 2,
   ChannelMessage = 3,
   ChannelMessageWithSource = 4,
-  AcknowledgeWithSource = 5,
+  DeferredChannelMessageWithSource = 5,
 }
 
 export type APIInteractionApplicationCommandCallbackData = {

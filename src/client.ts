@@ -168,7 +168,11 @@ export class CommandClient extends Discord.Client {
     } else if (apiInt.type === APIInteractionType.ApplicationCommand) {
       await interactions().post({
         data: {
-          type: APIInteractionResponseType.AcknowledgeWithSource,
+          type: APIInteractionResponseType.ChannelMessageWithSource,
+          data: {
+            // Braille empty character
+            content: "⠀",
+          },
         },
       });
     }
