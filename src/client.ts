@@ -168,13 +168,23 @@ export class CommandClient extends Discord.Client {
     } else if (apiInt.type === APIInteractionType.ApplicationCommand) {
       await interactions().post({
         data: {
-          type: APIInteractionResponseType.ChannelMessageWithSource,
-          data: {
-            // Braille empty character
-            content: "⠀",
-          },
+          type: APIInteractionResponseType.DeferredChannelMessageWithSource,
         },
       });
+      // console.log(res0.toString());
+      // const appId = (await this.fetchApplication()).id;
+      // // @ts-ignore
+      // let res = await this.api.webhooks[appId][apiInt.token].messages[
+      //   "@original"
+      // ].patch({ data: {} });
+      // const id = res.id;
+      // const msg = (this.guilds
+      //   .resolve(apiInt.guild_id)
+      //   ?.channels.resolve(apiInt.channel_id) as TextChannel).messages.resolve(
+      //   id
+      // );
+      // console.log(res);
+      // console.log(msg?.author.username);
     }
 
     // Parse args and subcommands
@@ -204,6 +214,7 @@ export class CommandClient extends Discord.Client {
 
     const int = new Interaction({
       id: apiInt.id,
+      token: apiInt.token,
       command: {
         id: apiInt.data!.id,
         name: apiInt.data!.name,
@@ -222,6 +233,11 @@ export class CommandClient extends Discord.Client {
       if (command.id === apiInt.data!.id) {
         try {
           await command.execute(int);
+          if (!int.responded) {
+            throw new Error(
+              "An interaction must be responded to at least once"
+            );
+          }
         } catch (err) {
           console.error(
             `There was an error while executing ${command.name}:`,

@@ -10,7 +10,7 @@ class HelloWorldCommand extends Command {
     });
   }
   async run(int: Interaction) {
-    await int.say("Say, how are you doing");
+    await int.say("Hello, World!");
   }
 }
 
@@ -124,7 +124,9 @@ class BreakingRecursiveCommand extends SubCommand {
           : [new BreakingRecursiveCommand(`${name}-${depth - 1}`, depth - 1)],
     });
   }
-  async run() {}
+  async run(int: Interaction) {
+    int.say("Hi");
+  }
 }
 
 const client = new CommandClient({
